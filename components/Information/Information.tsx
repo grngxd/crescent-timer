@@ -7,11 +7,15 @@ const Information = () => {
     const [currentSession, setSession] = useState(0)
     
     useEffect(() => {
-        if(window.localStorage.getItem("session") !== null) {
+        if(window.localStorage.getItem("session") != null) {
+            console.log("true")
             setSession(parseInt(window.localStorage.getItem("session")!))
         } else {
             window.localStorage.setItem("currentSession", "0")
+            window.localStorage.setItem("sessions", JSON.stringify(["Session 1"]))
+            setSessions(["Session 1"])
             setSession(0)
+            console.log("false")
         }
 
         if (JSON.parse(window.localStorage.getItem("sessions")!) !== null || JSON.parse(window.localStorage.getItem("sessions")!) !== undefined || window.localStorage.getItem("sessions")! != "[]") {
