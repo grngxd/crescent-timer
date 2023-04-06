@@ -1,9 +1,25 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import { Plus, X } from "lucide-react";
+import short from "short-uuid";
+
+type Session = {
+  name: string;
+  id: number;
+  uid: string;
+  data: {
+    solves: {
+      [key: string]: {
+        time: number;
+        PlusTwo: boolean;
+        DNF: boolean;
+      };
+    };
+  };
+};
 
 export default function Settings() {
-  const [sessions, setSessions] = useState(["Session 1"]);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [currentSession, setSession] = useState(0);
 
   useEffect(() => {
@@ -22,29 +38,38 @@ export default function Settings() {
     }
   }, []);
 
-  const changeSessionName = (index: number, value: string) => {
+  const changeSessionName = (id: number, value: string) => {
     const updatedSessions = [...sessions];
-    updatedSessions[index] = value;
+    const index = updatedSessions.findIndex((session) => session.id === id);
+    updatedSessions[index].name = value;
     setSessions(updatedSessions);
     window.localStorage.setItem("sessions", JSON.stringify(updatedSessions));
   };
+  
 
   const deleteSession = (index: number) => {
+    console.log("deleting session at index " + index)
     const updatedSessions = [...sessions];
     updatedSessions.splice(index, 1);
-    if (updatedSessions.length === 0) {
-      updatedSessions.push("Session 1");
-    }
     setSessions(updatedSessions);
     window.localStorage.setItem("sessions", JSON.stringify(updatedSessions));
   };
+  
+  
 
   const addSession = () => {
-    const newSession = "Session " + (sessions.length + 1);
+    const newSession = {
+      name: "Session " + (sessions.length + 1),
+      id: sessions.length,
+      uid: short.generate(),
+      data: { solves: {} },
+    };
     const newSessions = [...sessions, newSession];
     window.localStorage.setItem("sessions", JSON.stringify(newSessions));
     setSessions(newSessions);
+    setSession(newSession.id);
   };
+  
   
 
   return (
@@ -58,34 +83,37 @@ export default function Settings() {
           <div className="flex flex-shrink flex-col gap-2">
             <h1 className="text-xl">Sessions</h1>
             <div className="flex flex-col gap-2">
-              {sessions.map((session, index) => {
-                return (
-                  <div key={index} className="flex items-left justify-normal gap-2">
-                    <input
-                      type="text"
-                      defaultValue={session}
-                      className="bg-white text-x-500 rounded-lg p-1 h-full"
-                      onChange={(e) => {
-                        changeSessionName(index, e.target.value);
-                      }}
-                    />
-                    <button
-                      onClick={() => {
-                        deleteSession(index);
-                      }}
-                      className="bg-white text-x-500 rounded-lg p-1 h-full"
-                    >
-                      <X />
-                    </button>
-                  </div>
-                );
-              })}
+            {sessions.map((session) => {
+              return (
+                <div key={session.name} className="flex items-left justify-normal gap-2">
+                  <input
+                    type="text"
+                    defaultValue={session.name}
+                    className="bg-white text-x-500 rounded-lg p-1 h-full"
+                    onChange={(e) => {
+                      changeSessionName(session.id, e.target.value);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      deleteSession(session.id);
+                    }}
+                    className="bg-white text-x-500 rounded-lg p-1 h-full"
+                  >
+                    <X />
+                  </button>
+                </div>
+              );
+            })}
+
               <button
                 onClick={() => {
-                    addSession();
-                }} 
+                  addSession();
+                }}
                 className="bg-white text-x-500 rounded-lg p-1 h-full inline-flex flex-shrink-0 w-auto"
-                ><Plus/> Add Session</button>
+              >
+                <Plus /> Add Session
+              </button>
             </div>
           </div>
         </div>
