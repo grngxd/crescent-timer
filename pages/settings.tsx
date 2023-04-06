@@ -47,10 +47,8 @@ export default function Settings() {
   };
   
 
-  const deleteSession = (index: number) => {
-    console.log("deleting session at index " + index)
-    const updatedSessions = [...sessions];
-    updatedSessions.splice(index, 1);
+  const deleteSession = (uid: string) => {
+    const updatedSessions = sessions.filter((session) => session.uid !== uid);
     setSessions(updatedSessions);
     window.localStorage.setItem("sessions", JSON.stringify(updatedSessions));
   };
@@ -85,7 +83,7 @@ export default function Settings() {
             <div className="flex flex-col gap-2">
             {sessions.map((session) => {
               return (
-                <div key={session.name} className="flex items-left justify-normal gap-2">
+                <div key={session.uid} className="flex items-left justify-normal gap-2">
                   <input
                     type="text"
                     defaultValue={session.name}
@@ -96,7 +94,7 @@ export default function Settings() {
                   />
                   <button
                     onClick={() => {
-                      deleteSession(session.id);
+                      deleteSession(session.uid);
                     }}
                     className="bg-white text-x-500 rounded-lg p-1 h-full"
                   >
