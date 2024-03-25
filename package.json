@@ -1,54 +1,26 @@
 {
-  "name": "my-qwik-empty-starter",
-  "description": "App with Routing built-in ready to create your app",
-  "engines": {
-    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
-  },
-  "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
-  "private": true,
-  "trustedDependencies": [
-    "sharp"
-  ],
-  "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
-  "type": "module",
+  "name": "vite-template-solid",
+  "version": "0.0.0",
+  "description": "",
   "scripts": {
-    "build": "qwik build",
-    "build.client": "vite build",
-    "build.preview": "vite build --ssr src/entry.preview.tsx",
-    "build.types": "tsc --incremental --noEmit",
-    "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
-    "dev": "vite --mode ssr",
-    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-    "fmt": "prettier --write .",
-    "fmt.check": "prettier --check .",
-    "lint": "eslint \"src/**/*.ts*\"",
-    "postinstall": "prisma generate",
-    "preview": "qwik build preview && vite preview --open",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:migrate:prod": "prisma migrate deploy",
-    "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
+  "license": "MIT",
   "devDependencies": {
-    "@builder.io/qwik": "^1.5.1",
-    "@builder.io/qwik-city": "^1.5.1",
-    "@prisma/client": "5.3.1",
-    "@types/eslint": "^8.56.5",
-    "@types/node": "^20.11.24",
-    "@typescript-eslint/eslint-plugin": "^7.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^8.57.0",
-    "eslint-plugin-qwik": "^1.5.1",
-    "postcss": "^8.4.31",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.4",
-    "prisma": "^5.3.1",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.3.3",
-    "undici": "*",
-    "vite": "^5.1.4",
-    "vite-tsconfig-paths": "^4.2.1"
+    "@types/node": "^20.11.30",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "solid-devtools": "^0.29.2",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-solid": "^2.8.2"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.40.0",
+    "solid-js": "^1.8.11"
   }
 }
