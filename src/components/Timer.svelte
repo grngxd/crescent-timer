@@ -14,27 +14,18 @@
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === " ") {
             event.preventDefault();
-            if (status === Status.idle) {
-                status = Status.ready;
-                formattedTime = "00.00";
-            }
+            handleDown();
         }
     }
 
     function handleKeyUp(event: KeyboardEvent) {
         if (event.key === " ") {
             event.preventDefault();
-            if (status === Status.ready) {
-                status = Status.timing;
-                startTimer();
-            } else if (status === Status.timing) {
-                status = Status.idle;
-                stopTimer();
-            }
+            handleUp();
         }
     }
 
-    function handleMouseDown() {
+    function handleDown() {
         if (status === Status.idle) {
             status = Status.ready;
             formattedTime = "00.00";
@@ -44,7 +35,7 @@
         }
     }
 
-    function handleMouseUp() {
+    function handleUp() {
         if (status === Status.ready) {
             status = Status.timing;
             startTimer();
@@ -97,7 +88,7 @@
     const dev = process.env.NODE_ENV === 'development';
 </script>
 
-<div class="flex flex-col" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>
+<div class="flex flex-col" on:mousedown={handleDown} on:mouseup={handleUp}>
     {#if dev}
         <p class="font-space-grotesk font-semibold text-2xl">debug: {status}</p>
     {/if}
