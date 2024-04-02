@@ -3,7 +3,20 @@ const config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
 
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'dela-gothic': ['"Dela Gothic One"', 'sans-serif'],
+        'kanit': ['Kanit', 'sans-serif'],
+        'reddit-mono': ['"Reddit Mono"', 'monospace'],
+        'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
+      },
+      colors: {
+        "hunyadi-yellow": "#F4AC45",
+        "timberwolf": "#DAD6D6",
+        "carribbean-green": "#037171",
+        "persian-green": "#009F93",
+      }
+    },
   },
 
   plugins: [],

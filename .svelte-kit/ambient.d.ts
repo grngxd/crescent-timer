@@ -55,9 +55,7 @@ declare module '$env/static/private' {
 	export const INIT_CWD: string;
 	export const INTEL_DEV_REDIST: string;
 	export const JABBA_HOME: string;
-	export const JABBA_SHELL_INTEGRATION: string;
 	export const JAVA_HOME: string;
-	export const JAVA_HOME_BEFORE_JABBA: string;
 	export const LANG: string;
 	export const LOCALAPPDATA: string;
 	export const LOGONSERVER: string;
@@ -180,9 +178,7 @@ declare module '$env/dynamic/private' {
 		INIT_CWD: string;
 		INTEL_DEV_REDIST: string;
 		JABBA_HOME: string;
-		JABBA_SHELL_INTEGRATION: string;
 		JAVA_HOME: string;
-		JAVA_HOME_BEFORE_JABBA: string;
 		LANG: string;
 		LOCALAPPDATA: string;
 		LOGONSERVER: string;
