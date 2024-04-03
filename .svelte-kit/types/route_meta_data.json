@@ -2,5 +2,14 @@
 	"/": [
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
+	],
+	"/profiles": [
+		"src/routes/+layout.ts"
+	],
+	"/profiles/[profile]": [
+		"src/routes/+layout.ts"
+	],
+	"/stats": [
+		"src/routes/+layout.ts"
 	]
 }
