@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { getSettings } from "$lib/settings";
+    import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
     import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
@@ -9,6 +11,7 @@
 
     onMount(() => {
         theme.set(getTheme());
+        settings.set(getSettings());
         loaded = true;
         console.log("a")
         supabase.from("test").select("*").then(console.log)

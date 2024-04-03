@@ -1,7 +1,8 @@
 <script lang="ts">
     import { scramble } from "$lib/stores/scramble";
     import { theme } from "$lib/stores/theme";
-    import { defaultTheme, getTheme } from "$lib/theme";
+    import type { Theme } from "$lib/theme";
+    import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
     import { randomScrambleForEvent } from "cubing/scramble";
     import { onMount } from 'svelte';
@@ -121,7 +122,7 @@
     });
 
     onMount(() => {
-        theme.set(getTheme() as typeof defaultTheme);
+        theme.set(getTheme() as Theme);
     });
 </script>
 

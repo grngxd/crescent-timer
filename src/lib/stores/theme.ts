@@ -1,4 +1,4 @@
-import { defaultTheme } from "$lib/theme";
+import { defaultThemes, type Theme } from "$lib/theme";
 import { writable } from "svelte/store";
 
-export const theme = writable<typeof defaultTheme>(defaultTheme);
+export const theme = writable<Theme>(defaultThemes.dark);
