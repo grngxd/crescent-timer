@@ -12,6 +12,7 @@
         waiting = "waiting",
         ready = "ready",
         timing = "timing",
+        completed = "completed"
     }
 
     let status = Status.idle;
@@ -60,7 +61,7 @@
                 }
             }, 350);
         } else if (status === Status.timing) {
-            status = Status.idle;
+            status = Status.completed;
             canSolve = false;
             stopTimer();
             scramble.set(await randomScrambleForEvent("222"));
@@ -81,6 +82,8 @@
             formattedTime = "00.00";
             status = Status.timing;
             startTimer();
+        } else if (status === Status.completed) {
+            status = Status.idle;
         }
     }
 

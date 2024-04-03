@@ -15,7 +15,7 @@
     })
 </script>
 
-<div class={`flex flex-col h-screen flex-1 flex-grow w-full ${
+<div class={`!select-none flex flex-col h-screen flex-1 flex-grow w-full ${
     css({
         backgroundColor: $theme.background,
     })
