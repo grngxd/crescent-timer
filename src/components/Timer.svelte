@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { scramble } from "$lib/stores/scramble";
+
     enum Status {
         idle = "idle",
         ready = "ready",
@@ -25,13 +27,14 @@
         }
     }
 
-    function handleDown() {
+    async function handleDown() {
         if (status === Status.idle) {
             status = Status.ready;
             formattedTime = "00.00";
         } else if (status === Status.timing) {
             status = Status.idle;
             stopTimer();
+            scramble.set(await randomScrambleForEvent("333"));
         }
     }
 
@@ -66,6 +69,7 @@
 
     import { defaultTheme, getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
+    import { randomScrambleForEvent } from "cubing/scramble";
     import { onMount } from 'svelte';
 
     let theme: typeof defaultTheme = defaultTheme;
@@ -88,7 +92,7 @@
     const dev = process.env.NODE_ENV === 'development';
 </script>
 
-<div class="flex flex-col" on:mousedown={handleDown} on:mouseup={handleUp}>
+<div class="select-none flex flex-col" on:mousedown={handleDown} on:mouseup={handleUp}>
     {#if dev}
         <p class="font-space-grotesk font-semibold text-2xl">debug: {status}</p>
     {/if}
