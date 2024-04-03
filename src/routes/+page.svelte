@@ -3,7 +3,7 @@
   import Timer from "../components/Timer.svelte";
 </script>
 
-<div class="flex gap-4 h-screen">
-  <Timer />
+<div class="flex flex-col h-screen">
   <Scramble />
+  <Timer />
 </div>

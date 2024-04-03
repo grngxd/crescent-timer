@@ -92,13 +92,8 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="select-none flex flex-col" on:mousedown={handleDown} on:mouseup={handleUp}>
-    {#if dev}
-        <p class={`font-space-grotesk font-semibold text-2xl ${css({
-            color: $theme.colors.text.primary
-          })}`}>debug: {status}</p>
-    {/if}
-    <p class={`font-reddit-mono font-semibold text-3xl ${
+<div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleDown} on:mouseup={handleUp}>
+    <p class={`font-reddit-mono font-semibold text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })

@@ -40,7 +40,14 @@ function checkFields(obj1: any, obj2: any): boolean {
 export const getTheme = () => {
     if (typeof localStorage === 'undefined') return defaultTheme;
 
-    let theme: typeof defaultTheme = JSON.parse(localStorage.getItem('theme')!);
+    let theme: typeof defaultTheme;
+    try {
+        theme = JSON.parse(localStorage.getItem('theme')!);
+    } catch (e) {
+        theme = defaultTheme;
+        localStorage.setItem('theme', JSON.stringify(defaultTheme));
+        return theme;
+    }
     if (!theme || !checkFields(defaultTheme, theme)) {
         theme = defaultTheme;
         localStorage.setItem('theme', JSON.stringify(defaultTheme));

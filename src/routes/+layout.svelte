@@ -8,12 +8,11 @@
 
     onMount(() => {
         theme.set(getTheme());
-        console.log(theme);
         loaded = true;
     })
 </script>
 
-<div class={`flex h-screen flex-1 flex-grow w-full ${
+<div class={`flex flex-col h-screen flex-1 flex-grow w-full ${
     css({
         backgroundColor: $theme.background
     })

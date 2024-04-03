@@ -15,6 +15,11 @@ const config = {
         "timberwolf": "#DAD6D6",
         "carribbean-green": "#037171",
         "persian-green": "#009F93",
+      },
+      fontSize: {
+        "10xl": "10rem",
+        "11xl": "12rem",
+        "12xl": "14rem",
       }
     },
   },
