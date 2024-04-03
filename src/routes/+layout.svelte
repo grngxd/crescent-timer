@@ -13,8 +13,10 @@
         theme.set(getTheme());
         settings.set(getSettings());
         loaded = true;
-        console.log("a")
-        supabase.from("test").select("*").then(console.log)
+        
+        supabase.from("test").select("*").then((data) => {
+            console.log(data);
+        });
     })
 </script>
 

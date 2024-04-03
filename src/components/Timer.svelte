@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { scramble } from "$lib/stores/scramble";
+    import { scramble, scrambles } from "$lib/stores/scramble";
     import { theme } from "$lib/stores/theme";
     import type { Theme } from "$lib/theme";
     import { getTheme } from "$lib/theme";
@@ -50,6 +50,19 @@
         if (!timer.contains(event.target as Node)) return;
         handleUp();
     }
+
+    function handleTouchStart(event: TouchEvent) {
+        event.preventDefault();
+        if (!timer.contains(event.target as Node)) return;
+        handleDown();
+    }
+
+    function handleTouchEnd(event: TouchEvent) {
+        event.preventDefault();
+        if (!timer.contains(event.target as Node)) return;
+        handleUp();
+    }
+
     let waitingTimeout: NodeJS.Timeout | undefined;
 
     async function handleDown() {
@@ -65,7 +78,9 @@
             status = Status.completed;
             canSolve = false;
             stopTimer();
-            scramble.set(await randomScrambleForEvent("222"));
+            const newScramble = await randomScrambleForEvent("222");
+            scramble.set(newScramble);
+            scrambles.update(s => [...s, newScramble]);
         }
     }
 
@@ -127,7 +142,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|stopPropagation on:mouseup|stopPropagation bind:this={timer}>
+<div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} bind:this={timer} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}>
     <p class={`font-reddit-mono font-normal text-8xl md:text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing

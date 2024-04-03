@@ -1,21 +1,18 @@
 <script lang="ts">
-  import { scramble } from "$lib/stores/scramble";
+  import { scramble, scrambles } from "$lib/stores/scramble";
   import { theme } from "$lib/stores/theme";
   import { css } from "@emotion/css";
-  import type { Alg } from "cubing/alg";
   import { randomScrambleForEvent } from "cubing/scramble";
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
   import ArrowLongLeft from "./icons/mynaui/ArrowLongLeft.svelte";
   import ArrowLongRight from "./icons/mynaui/ArrowLongRight.svelte";
 
-  const scrambles = writable<Alg[]>([]);
   let currentIndex = -1;
 
   onMount(async () => {
     const initialScramble = await randomScrambleForEvent("222");
     scramble.set(initialScramble);
-    scrambles.update(s => [...s, initialScramble]);
+    scrambles.set([initialScramble]);
     currentIndex++;
   });
 
@@ -26,11 +23,16 @@
     }
   }
 
-  async function newScramble() {
-    const newScramble = await randomScrambleForEvent("222");
-    scramble.set(newScramble);
-    scrambles.update(s => [...s, newScramble]);
-    currentIndex++;
+  async function nextScramble() {
+    if (currentIndex < $scrambles.length - 1) {
+      currentIndex++;
+      scramble.set($scrambles[currentIndex]);
+    } else {
+      const newScramble = await randomScrambleForEvent("222");
+      scramble.set(newScramble);
+      scrambles.update(s => [...s, newScramble]);
+      currentIndex++;
+    }
   }
 
   function handleKeyUp(event: KeyboardEvent) {
@@ -40,7 +42,7 @@
       return;
     } else if (event.key === "ArrowRight" || event.key === "ArrowUp") {
       event.preventDefault();
-      newScramble();
+      nextScramble();
       return;
     }
   }
@@ -51,7 +53,7 @@
   });
 </script>
 
-<div class={`z-[2] flex flex-row py-4 px-8 md:px-32 justify-center gap-16 items-center flex-grow-0 backdrop-blur-lg ${css({
+<div class={`w-full absolute text-center z-[2] flex flex-row py-4 px-8 md:px-32 justify-center gap-16 items-center flex-grow-0 backdrop-blur-lg ${css({
   backgroundColor: `${$theme.background}22`,
 })}`}>
   <button class={`font-space-grotesk font-light text-2xl rounded-full p-2 duration-150 transition-all active:scale-125 ${
@@ -74,5 +76,5 @@
         backgroundColor: `${$theme.colors.text.secondary}55`
       }
     })
-  }`} on:click={newScramble}><ArrowLongRight /></button>
+  }`} on:click={nextScramble}><ArrowLongRight /></button>
 </div>
