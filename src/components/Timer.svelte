@@ -21,7 +21,7 @@
     let status = Status.idle;
     let currentScramble: Alg;
     let canSolve = false;
-    let formattedTime = "00.00";
+    let formattedTime = "0.00";
     let timerInterval: NodeJS.Timeout | undefined;
 
     const dev = process.env.NODE_ENV === 'development';
@@ -98,11 +98,11 @@
         } else if (status === Status.waiting) {
             if (!canSolve) {
                 status = Status.idle;
-                formattedTime = "00.00";
+                formattedTime = "0.00";
                 clearTimeout(waitingTimeout);
                 return;
             }
-            formattedTime = "00.00";
+            formattedTime = "0.00";
             status = Status.timing;
             startTimer();
         } else if (status === Status.completed) {
@@ -119,12 +119,18 @@
             const seconds = Math.floor((elapsedTime % 60000) / 1000);
             const milliseconds = Math.floor((elapsedTime % 1000) / 10); // Convert to 10 milliseconds accuracy
 
-            const hoursStr = hours > 0 ? `${hours.toString().padStart(2, '0')}:` : '';
-            const minutesStr = minutes > 0 || hours > 0 ? `${minutes.toString().padStart(2, '0')}:` : '';
-            const secondsStr = seconds.toString().padStart(2, '0');
-            const millisecondsStr = milliseconds.toString().padStart(2, '0');
+            let formattedSeconds = seconds.toString();
+            let formattedMilliseconds = milliseconds.toString().padStart(2, '0');
 
-            formattedTime = `${hoursStr}${minutesStr}${secondsStr}.${millisecondsStr}`;
+            if (elapsedTime < 10000) {
+                formattedTime = `${formattedSeconds}.${formattedMilliseconds}`;
+            } else if (elapsedTime < 60000) {
+                formattedTime = `${formattedSeconds.padStart(2, '0')}.${formattedMilliseconds}`;
+            } else {
+                const minutesStr = minutes > 0 || hours > 0 ? `${minutes.toString().padStart(2, '0')}:` : '';
+                const secondsStr = seconds.toString().padStart(2, '0');
+                formattedTime = `${minutesStr}${secondsStr}.${formattedMilliseconds}`;
+            }
         }, 10);
     }
 
@@ -166,7 +172,7 @@
         }`} on:click={() => {
             if (status === Status.timing) {
                 status = Status.idle;
-                formattedTime = "00.00";
+                formattedTime = "0.00";
                 stopTimer();
             }
         }}>
@@ -180,7 +186,7 @@
         }`} on:click={() => {
             if (status === Status.timing) {
                 status = Status.idle;
-                formattedTime = "00.00";
+                formattedTime = "0.00";
                 stopTimer();
             }
         }}>
