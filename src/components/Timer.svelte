@@ -1,18 +1,27 @@
 <script lang="ts">
-  import { scramble } from "$lib/stores/scramble";
-  import { theme } from "$lib/stores/theme";
+    import { scramble } from "$lib/stores/scramble";
+    import { theme } from "$lib/stores/theme";
+    import { defaultTheme, getTheme } from "$lib/theme";
+    import { css } from "@emotion/css";
+    import { randomScrambleForEvent } from "cubing/scramble";
+    import { onMount } from 'svelte';
+    
     let timer: HTMLDivElement;
     enum Status {
         idle = "idle",
+        waiting = "waiting",
         ready = "ready",
         timing = "timing",
     }
 
     let status = Status.idle;
 
+    let canSolve = false;
+
     let formattedTime = "00.00";
     let timerInterval: NodeJS.Timeout | undefined;
 
+    const dev = process.env.NODE_ENV === 'development';
 
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === " ") {
@@ -43,10 +52,16 @@
 
     async function handleDown() {
         if (status === Status.idle) {
-            status = Status.ready;
-            formattedTime = "00.00";
+            status = Status.waiting
+            setTimeout(() => {
+                if (status === Status.waiting) {
+                    status = Status.ready;
+                    canSolve = true;
+                }
+            }, 350);
         } else if (status === Status.timing) {
             status = Status.idle;
+            canSolve = false;
             stopTimer();
             scramble.set(await randomScrambleForEvent("222"));
         }
@@ -54,6 +69,15 @@
 
     function handleUp() {
         if (status === Status.ready) {
+            status = Status.timing;
+            startTimer();
+        } else if (status === Status.waiting) {
+            if (!canSolve) {
+                status = Status.idle;
+                formattedTime = "00.00";
+                return;
+            }
+            formattedTime = "00.00";
             status = Status.timing;
             startTimer();
         }
@@ -81,11 +105,6 @@
         clearInterval(timerInterval);
     }
 
-    import { defaultTheme, getTheme } from "$lib/theme";
-    import { css } from "@emotion/css";
-    import { randomScrambleForEvent } from "cubing/scramble";
-    import { onMount } from 'svelte';
-
     onMount(() => {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
@@ -100,15 +119,13 @@
     onMount(() => {
         theme.set(getTheme() as typeof defaultTheme);
     });
-
-    const dev = process.env.NODE_ENV === 'development';
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|stopPropagation on:mouseup|stopPropagation bind:this={timer}>
     <p class={`font-reddit-mono font-semibold text-10xl ${
         css({
-            color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
+            color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })
     }`}>
         {formattedTime}

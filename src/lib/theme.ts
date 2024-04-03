@@ -19,7 +19,8 @@ export const defaultTheme = {
         },
         timer: {
             idle: '#ffffff',
-            waiting: '#fbc02d',
+            //waiting: '#fbc02d',
+            waiting: '#d32f2f',
             ready: '#388e3c',
             timing: '#ffffff',
         }
