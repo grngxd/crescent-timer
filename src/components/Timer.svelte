@@ -124,7 +124,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|stopPropagation on:mouseup|stopPropagation bind:this={timer}>
-    <p class={`font-reddit-mono font-semibold text-8xl md:text-10xl ${
+    <p class={`font-reddit-mono font-normal text-8xl md:text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })
