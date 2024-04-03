@@ -1,53 +1,56 @@
-import { deepEquality } from './util';
 
 export const defaultTheme = {
-    background: '#f5f5f5',
+    background: '#121212',
     colors: {
         universal: {
-            primary: '#007bff',
-            secondary: '#6c757d',
-            tertiary: '#17a2b8',
+            primary: '#bb86fc',
+            secondary: '#03dac6',
+            tertiary: '#3700b3',
         },
         levels: {
-            success: '#28a745',
-            danger: '#dc3545',
-            warning: '#ffc107',
+            success: '#388e3c',
+            danger: '#d32f2f',
+            warning: '#fbc02d',
         },
         text: {
-            primary: '#212529',
-            secondary: '#495057',
-            tertiary: '#6c757d',
+            primary: '#ffffff',
+            secondary: '#a0a0a0',
+            tertiary: '#616161',
         },
         timer: {
-            idle: '#000000',
-            waiting: '#ffc107',
-            ready: '#28a745',
-            timing: '#000000',
+            idle: '#ffffff',
+            waiting: '#fbc02d',
+            ready: '#388e3c',
+            timing: '#ffffff',
         }
     }
 };
+
+function checkFields(obj1: any, obj2: any): boolean {
+    for (let key in obj1) {
+        if (typeof obj1[key] === 'object' && obj1[key] !== null) {
+            if (!checkFields(obj1[key], obj2[key])) return false;
+        } else if (obj2[key] === undefined) {
+            return false;
+        }
+    }
+    return true;
+}
 
 export const getTheme = () => {
     if (typeof localStorage === 'undefined') return defaultTheme;
 
     let theme: typeof defaultTheme = JSON.parse(localStorage.getItem('theme')!);
-    if (!theme) {
+    if (!theme || !checkFields(defaultTheme, theme)) {
         theme = defaultTheme;
         localStorage.setItem('theme', JSON.stringify(defaultTheme));
         return theme;
     }
 
-    if (!deepEquality(theme, defaultTheme)) {
-        theme = defaultTheme;
-        localStorage.setItem('theme', JSON.stringify(defaultTheme));
-        return theme;
-    }   
-
     const populated = { ...defaultTheme, ...theme };
     if (theme !== populated) {
         theme = populated;
         localStorage.setItem('theme', JSON.stringify(populated));
-        return theme;
     }
 
     return theme;

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { scramble } from "$lib/stores/scramble";
+  import { theme } from "$lib/stores/theme";
 
     enum Status {
         idle = "idle",
@@ -72,8 +73,6 @@
     import { randomScrambleForEvent } from "cubing/scramble";
     import { onMount } from 'svelte';
 
-    let theme: typeof defaultTheme = defaultTheme;
-
     onMount(() => {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
@@ -86,19 +85,22 @@
     });
 
     onMount(() => {
-        theme = getTheme() as typeof defaultTheme;
+        theme.set(getTheme() as typeof defaultTheme);
     });
 
     const dev = process.env.NODE_ENV === 'development';
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="select-none flex flex-col" on:mousedown={handleDown} on:mouseup={handleUp}>
     {#if dev}
-        <p class="font-space-grotesk font-semibold text-2xl">debug: {status}</p>
+        <p class={`font-space-grotesk font-semibold text-2xl ${css({
+            color: $theme.colors.text.primary
+          })}`}>debug: {status}</p>
     {/if}
     <p class={`font-reddit-mono font-semibold text-3xl ${
         css({
-            color: (status === Status.idle) ? theme.colors.timer.idle : (status === Status.ready) ? theme.colors.timer.ready : theme.colors.timer.timing
+            color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })
     }`}>
         {formattedTime}

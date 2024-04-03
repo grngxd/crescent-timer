@@ -1,6 +1,4 @@
-import { randomScrambleForEvent } from "cubing/scramble";
+import type { Alg } from "cubing/alg";
 import { writable } from "svelte/store";
 
-export const scramble = writable(
-    await randomScrambleForEvent("333")
-);
+export const scramble = writable<Alg>();

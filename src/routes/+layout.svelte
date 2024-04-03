@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { defaultTheme, getTheme } from "$lib/theme";
+    import { theme } from "$lib/stores/theme";
+    import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
     import { onMount } from "svelte";
     import "../app.pcss";
     let loaded = false;
-    let theme: typeof defaultTheme = defaultTheme;
 
     onMount(() => {
-        theme = getTheme();
+        theme.set(getTheme());
         console.log(theme);
         loaded = true;
     })
@@ -15,7 +15,7 @@
 
 <div class={`flex h-screen flex-1 flex-grow w-full ${
     css({
-        backgroundColor: theme.background
+        backgroundColor: $theme.background
     })
 }`}>
     <slot/>
