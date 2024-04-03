@@ -20,6 +20,7 @@
     if (currentIndex > 0) {
       currentIndex--;
       scramble.set($scrambles[currentIndex]);
+      scrambles.update(s => s.slice(0, currentIndex + 1)); // Update scrambles store
     }
   }
 

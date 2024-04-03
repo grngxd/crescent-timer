@@ -4,6 +4,7 @@
     import type { Theme } from "$lib/theme";
     import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
+    import type { Alg } from "cubing/alg";
     import { randomScrambleForEvent } from "cubing/scramble";
     import { onMount } from 'svelte';
     
@@ -17,13 +18,18 @@
     }
 
     let status = Status.idle;
-
+    let currentScramble: Alg;
     let canSolve = false;
-
     let formattedTime = "00.00";
     let timerInterval: NodeJS.Timeout | undefined;
 
     const dev = process.env.NODE_ENV === 'development';
+
+    onMount(async () => {
+        currentScramble = await randomScrambleForEvent("222");
+        scramble.set(currentScramble);
+        scrambles.set([currentScramble]);
+    });
 
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === " ") {
@@ -78,9 +84,9 @@
             status = Status.completed;
             canSolve = false;
             stopTimer();
-            const newScramble = await randomScrambleForEvent("222");
-            scramble.set(newScramble);
-            scrambles.update(s => [...s, newScramble]);
+            scrambles.update(s => [...s, currentScramble]);
+            currentScramble = await randomScrambleForEvent("222");
+            scramble.set(currentScramble);
         }
     }
 
@@ -142,12 +148,42 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} bind:this={timer} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}>
+<div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] gap-4 justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|preventDefault on:mouseup|stopPropagation  bind:this={timer}>
     <p class={`font-reddit-mono font-normal text-8xl md:text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })
-    }`}>
+    }`} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}>
         {formattedTime}
     </p>
+
+    <div class="flex flex-row gap-4 md:hidden">
+        <button class={`min-w-8 font-space-grotesk font-normal text-2xl px-4 py-2 rounded-lg ${
+            css({
+                color: $theme.colors.text.primary,
+            })
+        }`} on:click={() => {
+            if (status === Status.timing) {
+                status = Status.idle;
+                formattedTime = "00.00";
+                stopTimer();
+            }
+        }}>
+            +2
+        </button>
+
+        <button class={`min-w-8 font-space-grotesk font-normal text-2xl px-4 py-2 rounded-lg ${
+            css({
+                color: $theme.colors.text.primary,
+            })
+        }`} on:click={() => {
+            if (status === Status.timing) {
+                status = Status.idle;
+                formattedTime = "00.00";
+                stopTimer();
+            }
+        }}>
+            DNF
+        </button>
+    </div>
 </div>
