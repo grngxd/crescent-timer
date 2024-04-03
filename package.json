@@ -41,6 +41,7 @@
     "@capacitor/core": "^5.5.1",
     "@capacitor/ios": "^5.5.1",
     "@emotion/css": "^11.11.2",
+    "@supabase/supabase-js": "^2.42.0",
     "cubing": "^0.48.2"
   },
   "type": "module"

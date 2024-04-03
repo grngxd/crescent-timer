@@ -26,6 +26,8 @@
  * ```
  */
 declare module '$env/static/private' {
+	export const VITE_SUPABASE_URL: string;
+	export const VITE_SUPABASE_ANON_KEY: string;
 	export const ALLUSERSPROFILE: string;
 	export const ANDROID_SDK_ROOT: string;
 	export const APPDATA: string;
@@ -149,6 +151,8 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
+		VITE_SUPABASE_URL: string;
+		VITE_SUPABASE_ANON_KEY: string;
 		ALLUSERSPROFILE: string;
 		ANDROID_SDK_ROOT: string;
 		APPDATA: string;
