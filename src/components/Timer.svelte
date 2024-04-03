@@ -1,5 +1,6 @@
 <script lang="ts">
     import { scramble, scrambles } from "$lib/stores/scramble";
+    import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
     import type { Theme } from "$lib/theme";
     import { getTheme } from "$lib/theme";
@@ -79,7 +80,7 @@
                     status = Status.ready;
                     canSolve = true;
                 }
-            }, 350);
+            }, $settings.timer.timeout * 1000);
         } else if (status === Status.timing) {
             status = Status.completed;
             canSolve = false;

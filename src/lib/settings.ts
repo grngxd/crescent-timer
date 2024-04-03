@@ -2,12 +2,18 @@ export const defaultSettings = {
     theme: "dark",
     locale: "en",
     notifications: true,
+    timer: {
+        timeout: 0.35,
+    }
 };
 
 type Settings = {
     theme: string,
     locale: string,
     notifications: boolean,
+    timer: {
+        timeout: number,
+    }
 }
 
 export const getSettings = () => {
