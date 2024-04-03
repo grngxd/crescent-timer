@@ -65,8 +65,13 @@
     })
   }`} on:click={previousScramble}><ArrowLongLeft /></button>
 
-  <p class={`font-space-grotesk font-light text-2xl ${css({
-    color: $theme.colors.text.primary
+  <p class={`font-space-grotesk font-light text-xl md:text-2xl ${css({
+    color: $theme.colors.text.primary,
+    // if md, word spacing is 0em, else -0.1em
+    wordSpacing: "0.15em",
+    "@media (max-width: 768px)": {
+      wordSpacing: "-0.1em"
+    }
   })}`}>{$scramble || "Loading Scramble..."}</p>
 
   <button class={`font-space-grotesk font-light text-2xl rounded-full p-2 duration-200 transition-all active:scale-125 ${
