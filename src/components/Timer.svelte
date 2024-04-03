@@ -1,7 +1,7 @@
 <script lang="ts">
   import { scramble } from "$lib/stores/scramble";
   import { theme } from "$lib/stores/theme";
-
+    let timer: HTMLDivElement;
     enum Status {
         idle = "idle",
         ready = "ready",
@@ -28,6 +28,19 @@
         }
     }
 
+    function handleMouseDown(event: MouseEvent) {
+        event.preventDefault();
+        if (!timer.contains(event.target as Node)) return;
+        handleDown();
+    }
+
+    function handleMouseUp(event: MouseEvent) {
+        event.preventDefault();
+        if (!timer.contains(event.target as Node)) return;
+        handleUp();
+    }
+
+
     async function handleDown() {
         if (status === Status.idle) {
             status = Status.ready;
@@ -35,7 +48,7 @@
         } else if (status === Status.timing) {
             status = Status.idle;
             stopTimer();
-            scramble.set(await randomScrambleForEvent("333"));
+            scramble.set(await randomScrambleForEvent("222"));
         }
     }
 
@@ -92,7 +105,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleDown} on:mouseup={handleUp}>
+<div class="absolute w-screen h-screen select-none flex flex-col flex-grow justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|stopPropagation on:mouseup|stopPropagation bind:this={timer}>
     <p class={`font-reddit-mono font-semibold text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
