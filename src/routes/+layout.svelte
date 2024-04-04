@@ -10,8 +10,9 @@
     let loaded = false;
 
     onMount(() => {
-        theme.set(getTheme());
         settings.set(getSettings());
+        theme.set(getTheme());
+        
         loaded = true;
         
         supabase.from("test").select("*").then((data) => {

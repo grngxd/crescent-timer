@@ -1,6 +1,7 @@
 <script lang="ts">
   import { scramble, scrambles } from "$lib/stores/scramble";
   import { theme } from "$lib/stores/theme";
+  import { time } from "$lib/stores/timer";
   import { css } from "@emotion/css";
   import { randomScrambleForEvent } from "cubing/scramble";
   import { onMount } from "svelte";
@@ -22,6 +23,8 @@
       scramble.set($scrambles[currentIndex]);
       scrambles.update(s => s.slice(0, currentIndex + 1)); // Update scrambles store
     }
+
+    time.set(0);
   }
 
   async function nextScramble() {
@@ -34,6 +37,8 @@
       scrambles.update(s => [...s, newScramble]);
       currentIndex++;
     }
+
+    time.set(0);
   }
 
   function handleKeyUp(event: KeyboardEvent) {

@@ -2,6 +2,7 @@
     import { scramble, scrambles } from "$lib/stores/scramble";
     import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
+    import { time } from "$lib/stores/timer";
     import type { Theme } from "$lib/theme";
     import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
@@ -21,10 +22,9 @@
     let status = Status.idle;
     let currentScramble: Alg;
     let canSolve = false;
+
     let formattedTime = "0.00";
     let timerInterval: NodeJS.Timeout | undefined;
-
-    const dev = process.env.NODE_ENV === 'development';
 
     onMount(async () => {
         currentScramble = await randomScrambleForEvent("222");
@@ -113,24 +113,7 @@
     function startTimer() {
         const startTime = Date.now(); 
         timerInterval = setInterval(() => {
-            const elapsedTime = Date.now() - startTime;
-            const hours = Math.floor(elapsedTime / 3600000);
-            const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-            const seconds = Math.floor((elapsedTime % 60000) / 1000);
-            const milliseconds = Math.floor((elapsedTime % 1000) / 10); // Convert to 10 milliseconds accuracy
-
-            let formattedSeconds = seconds.toString();
-            let formattedMilliseconds = milliseconds.toString().padStart(2, '0');
-
-            if (elapsedTime < 10000) {
-                formattedTime = `${formattedSeconds}.${formattedMilliseconds}`;
-            } else if (elapsedTime < 60000) {
-                formattedTime = `${formattedSeconds.padStart(2, '0')}.${formattedMilliseconds}`;
-            } else {
-                const minutesStr = minutes > 0 || hours > 0 ? `${minutes.toString().padStart(2, '0')}:` : '';
-                const secondsStr = seconds.toString().padStart(2, '0');
-                formattedTime = `${minutesStr}${secondsStr}.${formattedMilliseconds}`;
-            }
+            time.set(Date.now() - startTime);
         }, 10);
     }
 
@@ -152,19 +135,49 @@
     onMount(() => {
         theme.set(getTheme() as Theme);
     });
+
+    // Reactive statement to update formattedTime when time changes
+    $: {
+        const hours = Math.floor($time / 3600000);
+        const minutes = Math.floor(($time % 3600000) / 60000);
+        const seconds = Math.floor(($time % 60000) / 1000);
+        const milliseconds = Math.floor(($time % 1000) / 10); // Convert to 10 milliseconds accuracy
+
+        let formattedSeconds = seconds.toString();
+        let formattedMilliseconds = milliseconds.toString().padStart(2, '0');
+
+        if ($time < 10000) {
+            formattedTime = `${formattedSeconds}.${formattedMilliseconds}`;
+        } else if ($time < 60000) {
+            formattedTime = `${formattedSeconds.padStart(2, '0')}.${formattedMilliseconds}`;
+        } else {
+            const minutesStr = minutes > 0 || hours > 0 ? `${minutes.toString().padStart(2, '0')}:` : '';
+            const secondsStr = seconds.toString().padStart(2, '0');
+            formattedTime = `${minutesStr}${secondsStr}.${formattedMilliseconds}`;
+        }
+    }
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] gap-4 justify-center items-center" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mousedown|preventDefault on:mouseup|stopPropagation  bind:this={timer}>
+<div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] gap-4 justify-center items-center"
+    bind:this={timer}>
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <p class={`font-reddit-mono font-normal text-8xl md:text-10xl ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })
-    }`} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}>
+    }`}
+    on:touchstart={handleTouchStart}
+    on:touchend={handleTouchEnd}
+    on:mousedown={handleMouseDown}
+    on:mouseup={handleMouseUp}
+    on:mousedown|preventDefault
+    on:mouseup|stopPropagation 
+    >
         {formattedTime}
     </p>
 
-    <div class="flex flex-row gap-4 md:hidden">
+    <div class={`flex flex-row gap-4 md:hidden`}>
         <button class={`min-w-8 font-space-grotesk font-normal text-2xl px-4 py-2 rounded-lg ${
             css({
                 color: $theme.colors.text.primary,
