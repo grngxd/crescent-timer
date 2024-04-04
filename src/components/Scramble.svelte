@@ -59,10 +59,8 @@
   });
 </script>
 
-<div class={`w-full absolute text-center z-[2] flex flex-row py-4 px-8 md:px-32 justify-center gap-16 items-center flex-grow-0 backdrop-blur-lg ${css({
-  backgroundColor: `${$theme.background}22`,
-})}`}>
-  <button class={`font-space-grotesk font-light text-2xl rounded-full p-2 duration-150 transition-all active:scale-125 ${
+<div class="flex-1 md:flex-[0.6] flex items-center justify-between">
+  <button class={`font-space-grotesk font-light text-2xl rounded-full p-3 duration-150 transition-all active:scale-125 ${
     css({
       color: $theme.colors.text.primary,
       ":hover": {
@@ -80,7 +78,7 @@
     }
   })}`}>{$scramble || "Loading Scramble..."}</p>
 
-  <button class={`font-space-grotesk font-light text-2xl rounded-full p-2 duration-200 transition-all active:scale-125 ${
+  <button class={`font-space-grotesk font-light text-2xl rounded-full p-3 duration-200 transition-all active:scale-125 ${
     css({
       color: $theme.colors.text.primary,
       ":hover": {

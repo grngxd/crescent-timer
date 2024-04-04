@@ -8,7 +8,7 @@
     import { onMount } from "svelte";
     import "../app.pcss";
     import Loading from "../components/Loading.svelte";
-    import Navbar from "../components/Navbar.svelte";
+    import Tabs from "../components/Tabs.svelte";
     import { supabase } from "../db.server";
     onMount(() => {
         settings.set(getSettings());
@@ -30,6 +30,6 @@
     <div class="flex flex-col h-screen">
         <Loading />
         <slot/>
-        <Navbar />
+        <Tabs />
     </div>
 </div>
