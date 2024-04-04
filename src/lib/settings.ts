@@ -4,15 +4,17 @@ export const defaultSettings = {
     notifications: true,
     timer: {
         timeout: 0.35,
+        showButtons: false,
     }
 };
 
-type Settings = {
+export type Settings = {
     theme: string,
     locale: string,
     notifications: boolean,
     timer: {
         timeout: number,
+        showButtons: boolean,
     }
 }
 
@@ -35,6 +37,13 @@ export const getSettings = () => {
     }
 
     const populated = { ...defaultSettings, ...settings };
+
+    for (const key of Object.keys(defaultSettings)) {
+        if (!populated.hasOwnProperty(key)) {
+            (populated as any)[key] = defaultSettings[key as keyof Settings];
+        }
+    }
+
     if (settings !== populated) {
         settings = populated;
         localStorage.setItem('settings', JSON.stringify(populated));

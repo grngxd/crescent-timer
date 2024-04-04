@@ -6,6 +6,7 @@
     import { css } from "@emotion/css";
     import { onMount } from "svelte";
     import "../app.pcss";
+    import Navbar from "../components/Navbar.svelte";
     import { supabase } from "../db.server";
     let loaded = false;
 
@@ -26,5 +27,8 @@
         backgroundColor: $theme.background,
     })
 }`}>
-    <slot/>
+    <div class="flex flex-col h-screen">
+        <slot/>
+        <Navbar />
+    </div>
 </div>

@@ -177,7 +177,7 @@
         {formattedTime}
     </p>
 
-    <div class={`flex flex-row gap-4 md:hidden`}>
+    <div class={`${$settings.timer.showButtons ? "flex": "hidden"} flex-row gap-4 md:hidden`}>
         <button class={`min-w-8 font-space-grotesk font-normal text-2xl px-4 py-2 rounded-lg ${
             css({
                 color: $theme.colors.text.primary,
