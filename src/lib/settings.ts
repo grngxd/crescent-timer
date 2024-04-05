@@ -1,10 +1,22 @@
-export const defaultSettings = {
+import type { Session } from "./sessions";
+
+export const defaultSettings: Settings = {
     theme: "dark",
     locale: "en",
     notifications: true,
     timer: {
         timeout: 0.35,
         showButtons: false,
+    },
+    sessions: {
+        current: "Default",
+        sessions: {
+            "Default": {
+                name: "Default",
+                cube: "333",
+                solves: []
+            }
+        }
     }
 };
 
@@ -15,6 +27,12 @@ export type Settings = {
     timer: {
         timeout: number,
         showButtons: boolean,
+    },
+    sessions: {
+        current: string,
+        sessions: {
+            [key: string]: Session
+        }
     }
 }
 

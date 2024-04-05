@@ -1,37 +1,27 @@
 <script>
+  import { css } from "@emotion/css";
 
+
+    import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
-    import { css } from "@emotion/css";
-    import GraphDownLineDuotone from "./icons/solar/GraphDownLineDuotone.svelte";
-    import SettingsLinear from "./icons/solar/SettingsLinear.svelte";
-    import UserCircleLinear from "./icons/solar/UserCircleLinear.svelte";
+    import ArrowRightBold from "./icons/solar/ArrowRightBold.svelte";
   
   </script>
-  <div class="hidden lg:flex flex-row gap-4">
-      <button class={`w-12 h-12 flex items-center justify-center font-space-grotesk font-light text-2xl rounded-full duration-200 transition-all active:scale-125 ${
-          css({
-            color: $theme.colors.text.primary,
-            ":hover": {
-              backgroundColor: `${$theme.colors.text.secondary}55`
-            }
-          })
-        }`}><UserCircleLinear /></button>
-  
-      <button class={`text-[3rem] w-12 h-12 flex items-center justify-center font-space-grotesk font-light text-2xl rounded-full duration-200 transition-all active:scale-125 ${
-          css({
-          color: $theme.colors.text.primary,
-          ":hover": {
-              backgroundColor: `${$theme.colors.text.secondary}55`
-          }
-          })
-      }`}><GraphDownLineDuotone /></button>
-  
-      <button class={`w-12 h-12 flex items-center justify-center font-space-grotesk font-light text-2xl rounded-full duration-200 transition-all active:scale-125 ${
-          css({
-          color: $theme.colors.text.primary,
-          ":hover": {
-              backgroundColor: `${$theme.colors.text.secondary}55`
-          }
-          })
-      }`}><SettingsLinear /></button>
+  <div class="hidden lg:flex flex-row gap-3 items-center">
+      <ArrowRightBold class={`w-6 h-6 ${css({
+        color: `${$theme.colors.text.primary}55`
+      })}`} />
+
+      <p class={`font-space-grotesk font-light text-2xl ${css({
+        color: $theme.colors.text.primary
+      })}`}>
+        {$settings.sessions.sessions[$settings.sessions.current].name}
+      </p>
+
+      <p class={`font-space-grotesk font-light text-lg ${css({
+        color: `${$theme.colors.text.primary}55`
+      })}`}>
+        <!-- it is like "222", make it "2x2x2" -->
+        {$settings.sessions.sessions[$settings.sessions.current].cube.split("").join("x")}
+      </p>
   </div>

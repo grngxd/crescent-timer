@@ -16,8 +16,8 @@
   $: path = $page.url.pathname;
 </script>
 {#if !$timing}
-<button class={`absolute md:bottom-4 bottom-[12%] lg:hidden flex right-4 z-[2] p-4 text-4xl rounded-full backdrop-blur-lg transition-all duration-200 ${css({
-    color: `${$theme.colors.text.primary}09`,
+<button class={`absolute md:bottom-4 bottom-[12%] lg:hidden flex right-4 z-[2] p-2 text-4xl rounded-full backdrop-blur-lg transition-all duration-200 ${css({
+    color: `${$theme.colors.text.primary}22`,
     backgroundColor: `${$theme.background}22`,
     // on hover
     ":active": {
