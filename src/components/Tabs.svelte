@@ -6,8 +6,9 @@
   import { timing } from "$lib/stores/timer";
   import { css } from "@emotion/css";
   import { quintInOut } from "svelte/easing";
-  import { slide } from "svelte/transition";
+  import { fade, slide } from "svelte/transition";
   import GraphDownLineDuotone from "./icons/solar/GraphDownLineDuotone.svelte";
+  import SettingsLinear from "./icons/solar/SettingsLinear.svelte";
   import StopwatchLinear from "./icons/solar/StopwatchLinear.svelte";
   import UserCircleLinear from "./icons/solar/UserCircleLinear.svelte";
 
@@ -15,6 +16,21 @@
   $: path = $page.url.pathname;
 </script>
 {#if !$timing}
+<button class={`absolute md:bottom-4 bottom-[12%] lg:hidden flex right-4 z-[2] p-4 text-4xl rounded-full backdrop-blur-lg transition-all duration-200 ${css({
+    color: `${$theme.colors.text.primary}09`,
+    backgroundColor: `${$theme.background}22`,
+    // on hover
+    ":active": {
+        color: `${$theme.colors.text.primary}FF`,
+        backgroundColor: `${$theme.colors.text.secondary}33`
+    },
+    ":hover": {
+        color: `${$theme.colors.text.primary}22`,
+    }
+})}`} transition:fade={{duration:250, delay: 0}}>
+    <SettingsLinear />
+</button>
+
 <div class={`absolute bottom-0 w-screen z-[2] h-[10%] backdrop-blur-lg inline-flex md:hidden ${css({
     backgroundColor: `${$theme.background}22`,
     color: $theme.colors.text.primary

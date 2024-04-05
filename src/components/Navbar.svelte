@@ -3,17 +3,18 @@
   import { quintInOut } from "svelte/easing";
   import { slide } from "svelte/transition";
   import LeftNavButtons from "./LeftNavButtons.svelte";
+  import RightNavButtons from "./RightNavButtons.svelte";
   import Scramble from "./Scramble.svelte";
 
 </script>
 
 {#if !$timing}
 <div
-  class="w-full absolute text-center z-[2] flex flex-row py-4 px-8 md:px-32 justify-between items-center gap-16 flex-grow backdrop-blur-lg h-min"
+  class="w-full absolute text-center z-[2] flex flex-row py-4 px-2 md:px-8 lg:px-32 justify-between items-center gap-16 flex-grow backdrop-blur-lg h-min"
   transition:slide={{duration:250, axis: "y", delay: 0, easing: quintInOut}}
 > 
   <LeftNavButtons />
   <Scramble />
-  <LeftNavButtons />
+  <RightNavButtons />
 </div>
 {/if}
