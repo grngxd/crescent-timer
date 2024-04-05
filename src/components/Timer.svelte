@@ -2,7 +2,7 @@
     import { scramble, scrambles } from "$lib/stores/scramble";
     import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
-    import { time } from "$lib/stores/timer";
+    import { time, timing } from "$lib/stores/timer";
     import type { Theme } from "$lib/theme";
     import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
@@ -111,6 +111,7 @@
     }
 
     function startTimer() {
+        timing.set(true);
         const startTime = Date.now(); 
         timerInterval = setInterval(() => {
             time.set(Date.now() - startTime);
@@ -118,6 +119,7 @@
     }
 
     function stopTimer() {
+        timing.set(false);
         clearInterval(timerInterval);
     }
 

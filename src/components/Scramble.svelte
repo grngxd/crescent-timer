@@ -59,7 +59,7 @@
   });
 </script>
 
-<div class="flex-1 md:flex-[0.6] flex items-center justify-between">
+<div class="flex-1 w-full lg:flex-[0.6] flex items-center justify-between flex-grow">
   <button class={`font-space-grotesk font-light text-2xl rounded-full p-3 duration-150 transition-all active:scale-125 ${
     css({
       color: $theme.colors.text.primary,
