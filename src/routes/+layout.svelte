@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getSettings } from "$lib/settings";
     import { loading } from "$lib/stores/misc";
+    import { getSessions, sessions } from "$lib/stores/sessions";
     import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
     import { getTheme } from "$lib/theme";
@@ -13,6 +14,7 @@
     onMount(() => {
         settings.set(getSettings());
         theme.set(getTheme());
+        sessions.set(getSessions());
         
         loading.set(false);
         

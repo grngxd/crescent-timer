@@ -1,7 +1,7 @@
 <script lang="ts">
     import { css } from "@emotion/css";
 
-    import { settings } from "$lib/stores/settings";
+    import { currentSession, sessions } from "$lib/stores/sessions";
     import { theme } from "$lib/stores/theme";
     import { timing } from "$lib/stores/timer";
     import { onMount } from "svelte";
@@ -34,20 +34,20 @@
         <p class={`font-space-grotesk font-light text-2xl ${css({
             color: $theme.colors.text.primary
         })}`}>
-            {$settings.sessions.sessions[$settings.sessions.current].name}
+            {$sessions.sessions[$currentSession].name}
         </p>
 
         <p class={`font-space-grotesk font-light text-lg ${css({
             color: `${$theme.colors.text.primary}55`
         })}`}>
             <!-- it is like "222", make it "2x2x2" -->
-            {$settings.sessions.sessions[$settings.sessions.current].cube.split("").join("x")}
+            {$sessions.sessions[$currentSession].cube.split("").join("x")}
         </p>
     </div>
 
     <!-- Dropdown Menu -->
     {#if open && !$timing}
-        <div class={`absolute hidden lg:flex flex-col gap-1 top-14 right-0 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar scrollbar-thin ${css({
+        <div class={`absolute hidden lg:flex flex-col gap-1 top-14 right-0 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar-thin ${css({
             color: $theme.colors.text.primary,
             background: `${$theme.colors.text.tertiary}22`,
             scrollbarColor: `${$theme.colors.text.tertiary}55 ${$theme.colors.text.tertiary}22`,
@@ -55,16 +55,16 @@
         transition:slide={{duration:150, delay: 0, easing: quintOut}}
         bind:this={dropDown}>
 
-        {#each Object.entries($settings.sessions.sessions) as [key, session]}
+        {#each Object.entries($sessions.sessions) as [key, session]}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div class={`flex flex-row gap-3 items-center cursor-pointer p-2 rounded-md transition-all ${css({
-                background: $settings.sessions.current === key ? `${$theme.colors.text.tertiary}33` : "transparent",
+                background: $currentSession === key ? `${$theme.colors.text.tertiary}33` : "transparent",
                 "&:hover": {
-                    background: $settings.sessions.current === key ? `${$theme.colors.text.tertiary}44` : `${$theme.colors.text.tertiary}11`
+                    background: $currentSession === key ? `${$theme.colors.text.tertiary}44` : `${$theme.colors.text.tertiary}11`
                 }
             })}`} on:click|stopPropagation={() => {
-                $settings.sessions.current = key;
+                $currentSession = key;  
             }}>
                 <p class={`font-space-grotesk font-light text-2xl ${css({
                     color: $theme.colors.text.primary
