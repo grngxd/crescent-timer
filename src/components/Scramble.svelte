@@ -11,17 +11,15 @@
 
   let currentIndex = -1;
 
-  onMount(async () => {
-    const initialScramble = await randomScrambleForEvent($sessions.sessions[$currentSession].cube);
-    scramble.set(initialScramble);
-    scrambles.set([initialScramble]);
-    currentIndex++;
-  });
-
-  currentSession.subscribe(async (v) => {
-    scramble.set(
-      await randomScrambleForEvent($sessions.sessions[v].cube)
-    )
+  // onMount(async () => {
+  //   const initialScramble = await randomScrambleForEvent($sessions.sessions[$currentSession].cube);
+  //   scramble.set(initialScramble);
+  //   scrambles.set([initialScramble]);
+  //   currentIndex++;
+  // });
+  
+  currentSession.subscribe(() => {
+    nextScramble();
   });
 
   async function previousScramble() {

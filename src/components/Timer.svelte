@@ -7,7 +7,6 @@
     import { getTheme } from "$lib/theme";
     import { css } from "@emotion/css";
     import type { Alg } from "cubing/alg";
-    import { randomScrambleForEvent } from "cubing/scramble";
     import { onMount } from 'svelte';
     
     let timer: HTMLDivElement;
@@ -25,12 +24,6 @@
 
     let formattedTime = "0.00";
     let timerInterval: NodeJS.Timeout | undefined;
-
-    onMount(async () => {
-        currentScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube);
-        scramble.set(currentScramble);
-        scrambles.set([currentScramble]);
-    });
 
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === " ") {
@@ -86,7 +79,7 @@
             canSolve = false;
             stopTimer();
             scrambles.update(s => [...s, currentScramble]);
-            currentScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube);
+            currentScramble = $scramble;
             scramble.set(currentScramble);
         }
     }

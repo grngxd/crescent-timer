@@ -14,7 +14,6 @@
 
     onMount(() => {
         window.addEventListener("click", (event) => {
-            console.log(event.target);
             if (sessionManager && (!sessionManager.contains(event.target as Node) || dropDown.contains(event.target as Node))) {
                 open = false;
             }
