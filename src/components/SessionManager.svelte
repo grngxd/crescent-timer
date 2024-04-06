@@ -42,7 +42,7 @@
 
 <!-- Dropdown Menu -->
 {#if open}
-    <div class={`absolute top-16 right-6 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar scrollbar-thin ${css({
+    <div class={`absolute hidden lg:flex top-16 right-6 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar scrollbar-thin ${css({
         color: $theme.colors.text.primary,
         background: `${$theme.colors.text.tertiary}22`,
         scrollbarColor: `${$theme.colors.text.tertiary}55 ${$theme.colors.text.tertiary}22`,
