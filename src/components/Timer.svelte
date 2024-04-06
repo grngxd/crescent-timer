@@ -166,7 +166,7 @@
 <div class="w-screen h-screen select-none flex flex-col flex-grow flex-[0.85] gap-4 justify-center items-center"
     bind:this={timer}>
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-    <p class={`font-reddit-mono font-normal text-8xl md:text-10xl ${
+    <p class={`font-reddit-mono font-normal text-8xl md:text-10xl p-24 ${
         css({
             color: (status === Status.idle) ? $theme.colors.timer.idle : (status === Status.waiting) ? $theme.colors.timer.waiting : (status === Status.ready) ? $theme.colors.timer.ready : $theme.colors.timer.timing
         })

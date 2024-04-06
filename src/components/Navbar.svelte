@@ -3,8 +3,8 @@
   import { quintInOut } from "svelte/easing";
   import { slide } from "svelte/transition";
   import LeftNavButtons from "./LeftNavButtons.svelte";
-  import RightNavButtons from "./RightNavButtons.svelte";
   import Scramble from "./Scramble.svelte";
+  import SessionManager from "./SessionManager.svelte";
 
 </script>
 
@@ -15,6 +15,6 @@
 > 
   <LeftNavButtons />
   <Scramble />
-  <RightNavButtons />
+  <SessionManager />
 </div>
 {/if}
