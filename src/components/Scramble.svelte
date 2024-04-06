@@ -1,5 +1,6 @@
 <script lang="ts">
   import { scramble, scrambles } from "$lib/stores/scramble";
+  import { settings } from "$lib/stores/settings";
   import { theme } from "$lib/stores/theme";
   import { time } from "$lib/stores/timer";
   import { css } from "@emotion/css";
@@ -11,7 +12,7 @@
   let currentIndex = -1;
 
   onMount(async () => {
-    const initialScramble = await randomScrambleForEvent("222");
+    const initialScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube);
     scramble.set(initialScramble);
     scrambles.set([initialScramble]);
     currentIndex++;
@@ -21,7 +22,6 @@
     if (currentIndex > 0) {
       currentIndex--;
       scramble.set($scrambles[currentIndex]);
-      scrambles.update(s => s.slice(0, currentIndex + 1)); // Update scrambles store
     }
 
     time.set(0);
@@ -32,7 +32,7 @@
       currentIndex++;
       scramble.set($scrambles[currentIndex]);
     } else {
-      const newScramble = await randomScrambleForEvent("222");
+      const newScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube)
       scramble.set(newScramble);
       scrambles.update(s => [...s, newScramble]);
       currentIndex++;

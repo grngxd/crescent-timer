@@ -27,7 +27,7 @@
     let timerInterval: NodeJS.Timeout | undefined;
 
     onMount(async () => {
-        currentScramble = await randomScrambleForEvent("222");
+        currentScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube);
         scramble.set(currentScramble);
         scrambles.set([currentScramble]);
     });
@@ -86,7 +86,7 @@
             canSolve = false;
             stopTimer();
             scrambles.update(s => [...s, currentScramble]);
-            currentScramble = await randomScrambleForEvent("222");
+            currentScramble = await randomScrambleForEvent($settings.sessions.sessions[$settings.sessions.current].cube);
             scramble.set(currentScramble);
         }
     }
