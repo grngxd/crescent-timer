@@ -8,11 +8,13 @@
     import { slide } from "svelte/transition";
     import ArrowRightBold from "./icons/solar/ArrowRightBold.svelte";
     let sessionManager: HTMLDivElement;
+    let dropDown: HTMLDivElement;
     let open = false;
 
     onMount(() => {
         window.addEventListener("click", (event) => {
-            if (sessionManager && !sessionManager.contains(event.target as Node)) {
+            console.log(event.target);
+            if (sessionManager && (!sessionManager.contains(event.target as Node) || dropDown.contains(event.target as Node))) {
                 open = false;
             }
         });
@@ -42,11 +44,38 @@
 
 <!-- Dropdown Menu -->
 {#if open}
-    <div class={`absolute hidden lg:flex top-16 right-6 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar scrollbar-thin ${css({
+    <div class={`absolute hidden lg:flex flex-col gap-1 top-16 right-6 w-64 max-h-48 py-2 px-2 bg-white rounded-lg shadow-lg z-3 overflow-x-clip overflow-y-auto scrollbar scrollbar-thin ${css({
         color: $theme.colors.text.primary,
         background: `${$theme.colors.text.tertiary}22`,
         scrollbarColor: `${$theme.colors.text.tertiary}55 ${$theme.colors.text.tertiary}22`,
-    })}`} transition:slide={{duration:300, delay: 0, easing: quintOut}}>
-       Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. Force scroll text. 
+    })}`}
+    transition:slide={{duration:300, delay: 0, easing: quintOut}}
+    bind:this={dropDown}>
+
+    {#each Object.entries($settings.sessions.sessions) as [key, session]}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div class={`flex flex-row gap-3 items-center cursor-pointer p-2 rounded-md transition-all ${css({
+            background: $settings.sessions.current === key ? `${$theme.colors.text.tertiary}33` : "transparent",
+            "&:hover": {
+                background: $settings.sessions.current === key ? `${$theme.colors.text.tertiary}44` : `${$theme.colors.text.tertiary}11`
+            }
+        })}`} on:click|stopPropagation={() => {
+            $settings.sessions.current = key;
+        }}>
+            <p class={`font-space-grotesk font-light text-2xl ${css({
+                color: $theme.colors.text.primary
+            })}`}>
+                {session.name}
+            </p>
+
+            <p class={`font-space-grotesk font-light text-lg ${css({
+                color: `${$theme.colors.text.primary}55`
+            })}`}>
+                {session.cube.split("").join("x")}
+            </p>
+        </div>
+    {/each}
+
     </div>
 {/if}

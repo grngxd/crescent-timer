@@ -15,7 +15,12 @@ export const defaultSettings: Settings = {
                 name: "Default",
                 cube: "333",
                 solves: []
-            }
+            },
+            "2x2": {
+                name: "2x2",
+                cube: "222",
+                solves: []
+            },
         }
     }
 };
