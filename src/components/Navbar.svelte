@@ -10,7 +10,7 @@
 
 {#if !$timing}
 <div
-  class="w-full absolute text-center z-[2] flex flex-row py-4 px-6 justify-between items-center gap-16 flex-grow backdrop-blur-lg h-min"
+  class="w-full absolute transition-all text-center z-[2] flex flex-row py-4 px-6 justify-between items-center gap-16 flex-grow backdrop-blur-lg h-min"
   transition:slide={{duration:250, axis: "y", delay: 0, easing: quintInOut}}
 > 
   <LeftNavButtons />
