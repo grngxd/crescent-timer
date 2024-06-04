@@ -18,8 +18,12 @@
   //   currentIndex++;
   // });
   
-  currentSession.subscribe(() => {
-    nextScramble();
+  currentSession.subscribe(async () => {
+    currentIndex = 0;
+    const initialScramble = await randomScrambleForEvent($sessions.sessions[$currentSession].cube);
+    scramble.set(initialScramble);
+    scrambles.set([initialScramble]);
+
   });
 
   async function previousScramble() {
@@ -73,7 +77,7 @@
     })
   }`} on:click={previousScramble}><ArrowLongLeft /></button>
 
-  <p class={`font-space-grotesk font-light text-xl md:text-2xl ${css({
+  <p class={`font-space-grotesk font-light text-xl md:text-2xl w-full ${css({
     color: $theme.colors.text.primary,
     // if md, word spacing is 0em, else -0.1em
     wordSpacing: "0.15em",
