@@ -5,11 +5,9 @@
     import { settings } from "$lib/stores/settings";
     import { theme } from "$lib/stores/theme";
     import { getTheme } from "$lib/theme";
-    import { css } from "@emotion/css";
     import { onMount } from "svelte";
     import "../app.pcss";
-    import Loading from "../components/Loading.svelte";
-    import Tabs from "../components/Tabs.svelte";
+    import Timer from "../components/Timer.svelte";
     import { supabase } from "../db.server";
     onMount(() => {
         settings.set(getSettings());
@@ -24,7 +22,7 @@
     })
 </script>
 
-<div class={`!select-none flex flex-col h-screen flex-1 flex-grow w-full ${
+<!-- <div class={`!select-none flex flex-col h-screen flex-1 flex-grow w-full ${
     css({
         backgroundColor: $theme.background,
     })
@@ -34,4 +32,6 @@
         <slot/>
         <Tabs />
     </div>
-</div>
+</div> -->
+
+<Timer />
