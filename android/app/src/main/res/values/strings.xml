@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Crescent Timer</string>
+    <string name="title_activity_main">Crescent Timer</string>
+    <string name="package_name">cc.grng.crescent.timer</string>
+    <string name="custom_url_scheme">cc.grng.crescent.timer</string>
+</resources>
