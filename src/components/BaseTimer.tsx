@@ -1,10 +1,12 @@
 // src/components/timer/BaseTimer.tsx
 import type { ContextId, Signal } from "@builder.io/qwik";
-import { $, useContext, useOnWindow, useSignal, useTask$ } from "@builder.io/qwik";
+import { $, useContext, useOnDocument, useOnWindow, useSignal, useTask$ } from "@builder.io/qwik";
+import shortUUID from "short-uuid";
 import { startTimer, stopTimer, updateFormattedTime } from "~/common/misc/timer";
 
 export interface Props {
     context: ContextId<Signal<number>>;
+    timeout?: number;
 }
 
 export enum TimerState {
@@ -19,6 +21,12 @@ export const useBaseTimer = (props: Props) => {
     const timerElementContainer = useSignal<HTMLDivElement>();
     const timer = useContext(props.context);
     const formattedTimer = useSignal<string>("0.00");
+    const times = useSignal<{
+        formatted: string;
+        time: number;
+        id: string;
+        timestamp: number;
+    }[]>([]);
     const state = useSignal(TimerState.IDLE);
     const timing = useSignal(false);
     const timerInterval = useSignal<{ id: number | null }>({ id: null });
@@ -28,15 +36,12 @@ export const useBaseTimer = (props: Props) => {
         formattedTimer.value = updateFormattedTime(timer.value);
     });
 
-    const onDown = $(() => {
-        console.log("document.activeElement", document.activeElement);
-        console.log("timerElementContainer", timerElementContainer.value);
-        console.log("document.activeElement?.contains(timerElementContainer.value as Node | null)", document.activeElement?.contains(timerElementContainer.value as Node | null));
-        if (!document.activeElement?.contains(timerElementContainer.value as Node | null)) return;
+    const onDown = $((e: KeyboardEvent | PointerEvent | TouchEvent) => {
+        if (!timerElementContainer.value?.contains(e.target as Node)) return;
         switch (state.value) {
             case TimerState.IDLE:
                 state.value = TimerState.WAITING;
-                new Promise((resolve) => setTimeout(resolve, 350)).then(() => {
+                new Promise((resolve) => setTimeout(resolve, props.timeout ?? 350)).then(() => {
                     if (state.value === TimerState.WAITING) {
                         state.value = TimerState.READY;
                     }
@@ -45,12 +50,20 @@ export const useBaseTimer = (props: Props) => {
             case TimerState.TIMING:
                 state.value = TimerState.COMPLETED;
                 stopTimer(timing, timerInterval);
+
+                times.value = [...times.value, {
+                    formatted: formattedTimer.value,
+                    time: timer.value,
+                    id: shortUUID.generate(),
+                    timestamp: Date.now()
+                }];
                 break;
         }
     });
 
-    const onUp = $(() => {
-        if (!document.activeElement?.contains(timerElementContainer.value as Node | null)) return;
+    const onUp = $((e: KeyboardEvent | PointerEvent | TouchEvent) => {
+        
+        if (!timerElementContainer.value?.contains(e.target as Node)) return;
         switch (state.value) {
             case TimerState.READY:
                 state.value = TimerState.TIMING;
@@ -63,6 +76,7 @@ export const useBaseTimer = (props: Props) => {
                 state.value = TimerState.IDLE;
                 break;
         }
+
     });
 
     const timerColor = useSignal<string>("text-gray-500");
@@ -90,33 +104,39 @@ export const useBaseTimer = (props: Props) => {
     });
 
     useOnWindow("keydown", $((e: KeyboardEvent) => {
-        if (e.key === " ") onDown();
+        if (e.key === " ") onDown(e);
     }));
 
     useOnWindow("keyup", $((e: KeyboardEvent) => {
-        if (e.key === " ") onUp();
+        if (e.key === " ") onUp(e);
     }));
 
     const onPointerDown = $((e: PointerEvent) => {
-        onDown();
+        onDown(e);
     });
 
     const onPointerUp = $((e: PointerEvent) => {
-        onUp();
+        onUp(e);
     });
 
     const onTouchStart = $((e: TouchEvent) => {
-        onDown();
+        onDown(e);
     });
 
     const onTouchEnd = $((e: TouchEvent) => {
-        onUp();
+        onUp(e);
     });
+
+    useOnDocument("pointerdown", onPointerDown);
+    useOnDocument("pointerup", onPointerUp);
+    useOnDocument("touchstart", onTouchStart);
+    useOnDocument("touchend", onTouchEnd);
 
     return {
         timerElementContainer,
         formattedTimer,
         state,
+        times,
         onPointerDown,
         onPointerUp,
         onTouchStart,
