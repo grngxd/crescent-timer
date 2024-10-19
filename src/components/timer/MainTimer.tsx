@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ContextId, Signal } from "@builder.io/qwik";
-import { $, component$, useContext, useOnWindow, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useContext, useOnWindow, useSignal, useTask$ } from "@builder.io/qwik";
 import { startTimer, stopTimer, updateFormattedTime } from "~/common/misc/timer";
 
 interface Props {
@@ -23,7 +23,7 @@ export default component$((props: Props) => {
     const timing = useSignal(false);
     const timerInterval = useSignal<{ id: number | null }>({ id: null });
 
-    useVisibleTask$(({ track }) => {
+    useTask$(({ track }) => {
         track(() => timer.value);
         console.log("Timer value: ", timer.value);
         formattedTimer.value = updateFormattedTime(timer.value);

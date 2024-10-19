@@ -1,13 +1,13 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import TimerContext, { timerContextIds } from "~/common/context/TimerContext";
+import TimerContext, { TimerContexts } from "~/common/context/TimerContext";
 import MainTimer from "~/components/timer/MainTimer";
 
 export default component$(() => {
   return (
     <>
     <TimerContext>
-      <MainTimer context={timerContextIds.main} />
+      <MainTimer context={TimerContexts.MainTimer} />
     </TimerContext>
     </>
   );
